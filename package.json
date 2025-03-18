@@ -1,0 +1,14 @@
+{
+  "name": "2eb6f40c5f8f9145",
+  "main": "2eb6f40c5f8f9145@201.js",
+  "version": "201.0.0",
+  "homepage": "https://observablehq.com/d/2eb6f40c5f8f9145",
+  "author": {
+    "name": "Texas A&M",
+    "url": "https://observablehq.com/@texas-a-m"
+  },
+  "type": "module",
+  "peerDependencies": {
+    "@observablehq/runtime": "4 - 5"
+  }
+}

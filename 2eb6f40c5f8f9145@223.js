@@ -2,6 +2,10 @@ function _1(md){return(
 md`# Data Visualization Assignment`
 )}
 
+function _2(md){return(
+md`# Level 1 `
+)}
+
 function _d3(require){return(
 require("d3")
 )}
@@ -14,7 +18,7 @@ async function _csvdata(FileAttachment){return(
 await FileAttachment("temperature_daily.csv").text()
 )}
 
-function _5(csvdata){return(
+function _6(csvdata){return(
 csvdata.slice(0, 100)
 )}
 
@@ -22,11 +26,11 @@ function _parsedData(d3,csvdata){return(
 d3.csvParse(csvdata.trim())
 )}
 
-function _7(Inputs,parsedData){return(
+function _8(Inputs,parsedData){return(
 Inputs.table(parsedData.slice(0, 5))
 )}
 
-function _8(parsedData){return(
+function _9(parsedData){return(
 parsedData.slice(0,5)
 )}
 
@@ -38,17 +42,17 @@ d3.rollups(
     minTemp: d3.min(v, d => +d.min_temperature)
   }),
   d => {
-    let parsedDate = d3.timeParse("%Y-%m-%d")(d.date); // Fix format here
+    let parsedDate = d3.timeParse("%Y-%m-%d")(d.date); // Ensure correct date format
     return parsedDate ? d3.timeFormat("%Y")(parsedDate) : "Invalid Year"; // Extract Year
   },
   d => {
-    let parsedDate = d3.timeParse("%Y-%m-%d")(d.date); // Fix format here
+    let parsedDate = d3.timeParse("%Y-%m-%d")(d.date); // Ensure correct date format
     return parsedDate ? d3.timeFormat("%m")(parsedDate) : "Invalid Month"; // Extract Month
   }
 )
 )}
 
-function _10(Inputs,processedData){return(
+function _11(Inputs,processedData){return(
 Inputs.table(processedData)
 )}
 
@@ -63,19 +67,19 @@ processedData.flatMap(([year, months]) =>
 )
 )}
 
-function _12(finalData){return(
+function _13(finalData){return(
 finalData[0]
 )}
 
-function _13(Inputs,finalData){return(
+function _14(Inputs,finalData){return(
 Inputs.table(finalData)
 )}
 
-function _14(finalData){return(
+function _15(finalData){return(
 finalData.slice(0,5)
 )}
 
-function _15(md){return(
+function _16(md){return(
 md`Until above everything seems fine`
 )}
 
@@ -89,7 +93,7 @@ function _chart(d3,finalData)
       .attr("width", width)
       .attr("height", height);
 
-  // Scales
+  // Scales for x (years) and y (months)
   const x = d3.scaleBand()
       .domain(finalData.map(d => d.year))
       .range([margin.left, width - margin.right])
@@ -99,12 +103,12 @@ function _chart(d3,finalData)
       .domain([...Array(12).keys()].map(d => d + 1)) // Months (1-12)
       .range([margin.top, height - margin.bottom])
       .padding(0.1);
-
+  // Color scale based on max temperatures
   const color = d3.scaleSequential()
       .domain([d3.min(finalData, d => d.maxTemp), d3.max(finalData, d => d.maxTemp)])
       .interpolator(d3.interpolateWarm);
 
-  // Draw heatmap squares
+  // Draw heatmap squares 
   svg.selectAll("rect")
       .data(finalData)
       .enter()
@@ -116,20 +120,20 @@ function _chart(d3,finalData)
       .attr("fill", d => color(d.maxTemp))
       .attr("stroke", "#fff");
 
-  // **🛠 Fixed: X-Axis with Rotated Labels**
+  // X-Axis with Rotated Labels
   svg.append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x).tickFormat(d3.format("d")))
       .selectAll("text")
-      .attr("transform", "rotate(-45)") // **Rotate labels**
+      .attr("transform", "rotate(-45)") // Rotate labels
       .style("text-anchor", "end");
 
-  // **🛠 Fixed: Y-Axis (Months)**
+  // Y-axis showing month names
   svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(y).tickFormat(d => d3.timeFormat("%B")(new Date(2000, d - 1, 1))));
 
-  // **🔥 Tooltip Fix**
+  // Tooltip Interactivity
   const tooltip = d3.select("body").append("div")
     .style("position", "absolute")
     .style("background", "white")
@@ -150,7 +154,7 @@ function _chart(d3,finalData)
       tooltip.style("visibility", "hidden");
     });
 
-  // **🛠 Fixed: Enlarged & Centered Color Legend**
+  // Enlarged & Centered Color Legend
   const legendWidth = 300; // Increased size
   const legendHeight = 15;
   const legendX = width / 2 - legendWidth / 2; // Centering
@@ -194,15 +198,15 @@ function _chart(d3,finalData)
 }
 
 
-function _17(md){return(
-md`# LEVEL 2`
+function _18(md){return(
+md`# LEVEL 2 - - Detailed Daily Temperature Visualization`
 )}
 
 async function _dailyRawData(FileAttachment){return(
 await FileAttachment("temperature_daily.csv").csv()
 )}
 
-function _19(Inputs,dailyRawData){return(
+function _20(Inputs,dailyRawData){return(
 Inputs.table(dailyRawData.slice(0, 10))
 )}
 
@@ -224,11 +228,11 @@ dailyRawData.map(d => {
 }).filter(d => d !== null)
 )}
 
-function _22(Inputs,dailyParsedData){return(
+function _23(Inputs,dailyParsedData){return(
 Inputs.table(dailyParsedData.slice(0, 10))
 )}
 
-function _23(Inputs,dailyRawData,parseDate){return(
+function _24(Inputs,dailyRawData,parseDate){return(
 Inputs.table(dailyRawData.map(d => ({
   rawDate: d.date, 
   parsedDate: parseDate(d.date.trim())
@@ -245,7 +249,7 @@ function _chart1(d3,dailyParsedData)
       .attr("width", width)
       .attr("height", height);
 
-  // **Fix: Ensure x-domain covers all unique years**
+  //Ensure x-domain covers all unique years
   const x = d3.scaleBand()
       .domain([...new Set(dailyParsedData.map(d => d.year))])  // Unique years
       .range([margin.left, width - margin.right])
@@ -256,15 +260,15 @@ function _chart1(d3,dailyParsedData)
       .range([margin.top, height - margin.bottom])
       .padding(0.1);
 
-  // **Fix: Use consistent color scaling for max temp**
+  // Using consistent color scaling for max temp
   const color = d3.scaleSequential()
       .domain([d3.min(dailyParsedData, d => d.maxTemp), d3.max(dailyParsedData, d => d.maxTemp)])
       .interpolator(d3.interpolateWarm);
 
-  // **Fix: Ensure grouped data correctly maps year-month**
+  // Ensuring grouped data correctly maps year-month
   const groupedData = d3.group(dailyParsedData, d => `${d.year}-${String(d.month).padStart(2, "0")}`);
 
-  // **Draw heatmap squares**
+  // Draw heatmap squares
   const cells = svg.selectAll("g")
       .data([...groupedData])
       .enter()
@@ -280,7 +284,7 @@ function _chart1(d3,dailyParsedData)
       .attr("fill", ([, values]) => color(d3.max(values, d => d.maxTemp)))
       .attr("stroke", "#fff");
 
-  // **Fix: Draw two mini-line charts (Max Temp - Red, Min Temp - Blue)**
+  // Draw two mini-line charts (Max Temp - Red, Min Temp - Blue)
   const line = d3.line()
       .x(d => d3.scaleLinear().domain([1, 31]).range([0, x.bandwidth()])(d.day)) // Scale within cell
       .y(d => d3.scaleLinear().domain([
@@ -294,7 +298,7 @@ function _chart1(d3,dailyParsedData)
       .attr("stroke", "red")
       .attr("stroke-width", 1.5);
 
-  // **Fix: Draw Min Temp Line**
+  // Draw Min Temp Line
   const lineMin = d3.line()
       .x(d => d3.scaleLinear().domain([1, 31]).range([0, x.bandwidth()])(d.day))
       .y(d => d3.scaleLinear().domain([
@@ -308,7 +312,7 @@ function _chart1(d3,dailyParsedData)
       .attr("stroke", "blue")
       .attr("stroke-width", 1.5);
 
-  // **🛠 Fixed: X-Axis with Rotated Labels**
+  // X-Axis with Rotated Labels
   svg.append("g")
       .attr("transform", `translate(0,${height - margin.bottom})`)
       .call(d3.axisBottom(x).tickFormat(d3.format("d")))
@@ -316,12 +320,12 @@ function _chart1(d3,dailyParsedData)
       .attr("transform", "rotate(-45)")
       .style("text-anchor", "end");
 
-  // **🛠 Fixed: Y-Axis (Months)**
+  // Fixed: Y-Axis (Months)
   svg.append("g")
       .attr("transform", `translate(${margin.left},0)`)
       .call(d3.axisLeft(y).tickFormat(d => d3.timeFormat("%B")(new Date(2000, d - 1, 1))));
 
-  // **🔥 Tooltip Fix**
+  // Tooltip Fix
   const tooltip = d3.select("body").append("div")
     .style("position", "absolute")
     .style("background", "white")
@@ -345,7 +349,7 @@ function _chart1(d3,dailyParsedData)
       tooltip.style("visibility", "hidden");
     });
 
-  // **🛠 Fixed: Enlarged & Centered Color Legend**
+  // Enlarged & Centered Color Legend
   const legendWidth = 300;
   const legendHeight = 15;
   const legendX = width / 2 - legendWidth / 2;
@@ -397,28 +401,29 @@ export default function define(runtime, observer) {
   ]);
   main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
   main.variable(observer()).define(["md"], _1);
+  main.variable(observer()).define(["md"], _2);
   main.variable(observer("d3")).define("d3", ["require"], _d3);
   main.variable(observer("data")).define("data", ["FileAttachment"], _data);
   main.variable(observer("csvdata")).define("csvdata", ["FileAttachment"], _csvdata);
-  main.variable(observer()).define(["csvdata"], _5);
+  main.variable(observer()).define(["csvdata"], _6);
   main.variable(observer("parsedData")).define("parsedData", ["d3","csvdata"], _parsedData);
-  main.variable(observer()).define(["Inputs","parsedData"], _7);
-  main.variable(observer()).define(["parsedData"], _8);
+  main.variable(observer()).define(["Inputs","parsedData"], _8);
+  main.variable(observer()).define(["parsedData"], _9);
   main.variable(observer("processedData")).define("processedData", ["d3","parsedData"], _processedData);
-  main.variable(observer()).define(["Inputs","processedData"], _10);
+  main.variable(observer()).define(["Inputs","processedData"], _11);
   main.variable(observer("finalData")).define("finalData", ["processedData"], _finalData);
-  main.variable(observer()).define(["finalData"], _12);
-  main.variable(observer()).define(["Inputs","finalData"], _13);
-  main.variable(observer()).define(["finalData"], _14);
-  main.variable(observer()).define(["md"], _15);
+  main.variable(observer()).define(["finalData"], _13);
+  main.variable(observer()).define(["Inputs","finalData"], _14);
+  main.variable(observer()).define(["finalData"], _15);
+  main.variable(observer()).define(["md"], _16);
   main.variable(observer("chart")).define("chart", ["d3","finalData"], _chart);
-  main.variable(observer()).define(["md"], _17);
+  main.variable(observer()).define(["md"], _18);
   main.variable(observer("dailyRawData")).define("dailyRawData", ["FileAttachment"], _dailyRawData);
-  main.variable(observer()).define(["Inputs","dailyRawData"], _19);
+  main.variable(observer()).define(["Inputs","dailyRawData"], _20);
   main.variable(observer("parseDate")).define("parseDate", ["d3"], _parseDate);
   main.variable(observer("dailyParsedData")).define("dailyParsedData", ["dailyRawData","parseDate"], _dailyParsedData);
-  main.variable(observer()).define(["Inputs","dailyParsedData"], _22);
-  main.variable(observer()).define(["Inputs","dailyRawData","parseDate"], _23);
+  main.variable(observer()).define(["Inputs","dailyParsedData"], _23);
+  main.variable(observer()).define(["Inputs","dailyRawData","parseDate"], _24);
   main.variable(observer("chart1")).define("chart1", ["d3","dailyParsedData"], _chart1);
   return main;
 }

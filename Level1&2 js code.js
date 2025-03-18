@@ -391,39 +391,3 @@ function _chart1(d3,dailyParsedData)
 
   return svg.node();
 }
-
-
-export default function define(runtime, observer) {
-  const main = runtime.module();
-  function toString() { return this.url; }
-  const fileAttachments = new Map([
-    ["temperature_daily.csv", {url: new URL("./files/b14b4f364b839e451743331d515692dfc66046924d40e4bff6502f032bd591975811b46cb81d1e7e540231b79a2fa0f4299b0e339e0358f08bef900595e74b15.csv", import.meta.url), mimeType: "text/csv", toString}]
-  ]);
-  main.builtin("FileAttachment", runtime.fileAttachments(name => fileAttachments.get(name)));
-  main.variable(observer()).define(["md"], _1);
-  main.variable(observer()).define(["md"], _2);
-  main.variable(observer("d3")).define("d3", ["require"], _d3);
-  main.variable(observer("data")).define("data", ["FileAttachment"], _data);
-  main.variable(observer("csvdata")).define("csvdata", ["FileAttachment"], _csvdata);
-  main.variable(observer()).define(["csvdata"], _6);
-  main.variable(observer("parsedData")).define("parsedData", ["d3","csvdata"], _parsedData);
-  main.variable(observer()).define(["Inputs","parsedData"], _8);
-  main.variable(observer()).define(["parsedData"], _9);
-  main.variable(observer("processedData")).define("processedData", ["d3","parsedData"], _processedData);
-  main.variable(observer()).define(["Inputs","processedData"], _11);
-  main.variable(observer("finalData")).define("finalData", ["processedData"], _finalData);
-  main.variable(observer()).define(["finalData"], _13);
-  main.variable(observer()).define(["Inputs","finalData"], _14);
-  main.variable(observer()).define(["finalData"], _15);
-  main.variable(observer()).define(["md"], _16);
-  main.variable(observer("chart")).define("chart", ["d3","finalData"], _chart);
-  main.variable(observer()).define(["md"], _18);
-  main.variable(observer("dailyRawData")).define("dailyRawData", ["FileAttachment"], _dailyRawData);
-  main.variable(observer()).define(["Inputs","dailyRawData"], _20);
-  main.variable(observer("parseDate")).define("parseDate", ["d3"], _parseDate);
-  main.variable(observer("dailyParsedData")).define("dailyParsedData", ["dailyRawData","parseDate"], _dailyParsedData);
-  main.variable(observer()).define(["Inputs","dailyParsedData"], _23);
-  main.variable(observer()).define(["Inputs","dailyRawData","parseDate"], _24);
-  main.variable(observer("chart1")).define("chart1", ["d3","dailyParsedData"], _chart1);
-  return main;
-}
